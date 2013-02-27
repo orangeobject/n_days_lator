@@ -1,0 +1,62 @@
+<!doctype html>
+
+<html>
+  <head>
+		<title>AIS 90 Days Later</title>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+		<style>
+			input {font-size:32px;}
+		</style>
+
+		<script type ="text/javascript">
+			$(function() {
+					$( "#datepicker" ).datepicker({dateFormat:'yy/m/d'});
+					});
+
+function computeDate(year, month, day, addDays) {
+	var dt = new Date(year, month - 1, day);
+	var baseSec = dt.getTime();
+	var addSec = addDays * 86400000;//日数 * 1日のミリ秒数
+	var targetSec = baseSec + addSec;
+	dt.setTime(targetSec);
+	return dt;
+}
+
+var refresh = function(str){
+	var setValue = Date.parse(str) + (90*86400000);
+	
+	var date = new Date();
+	date.setTime(setValue);
+
+	document.getElementById("later").value = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+}
+
+var init = function(){
+	var today = new Date();
+	var yyyy = today.getFullYear();
+	var mm = today.getMonth() + 1;
+	var dd = today.getDate();
+	document.getElementById("datepicker").value = yyyy +"/"+ mm +"/" + dd ;
+
+	later = computeDate(yyyy,mm,dd,30);	
+	var yyyy = later.getFullYear();
+	var mm = later.getMonth() + 1;
+	var dd = later.getDate();
+
+	document.getElementById("later").value =  yyyy +"/"+ mm +"/" + dd ;
+}	
+</script>
+		</head>
+		<body bgcolor="#333333" text="#ffffff" onLoad = "init();">
+			<div style = "text-align:center;">
+				<input id=datepicker value="" onChange = "refresh(this.value);" ><br>
+				<br><br><br>
+				90日後は・・・<br>
+				<input id=later > <span onClick="alert('間隔変更')"><br>
+					+option</span>
+			</div>
+		</body>
+	</html>
